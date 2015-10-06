@@ -102,9 +102,19 @@ Rails.application.routes.draw do
   resources :documents
   resources :attaches do
     resource :document
+    resource :job
   end
 
   resources :groups
+
+  resources :jobs do
+    resources :attaches
+    resource  :job_class
+  end
+
+  resources :job_classes do
+    resources :jobs
+  end
 
   get 'user',        to: 'users#profile'
   get 'user/inbox',  to: 'users#inbox'

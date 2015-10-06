@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211134612) do
+ActiveRecord::Schema.define(version: 20150219120504) do
 
   create_table "attaches", force: true do |t|
     t.integer "message_id"
     t.integer "attachable_id"
     t.string  "attachable_type"
+    t.integer "job_id"
   end
 
   create_table "documents", force: true do |t|
@@ -52,6 +53,18 @@ ActiveRecord::Schema.define(version: 20150211134612) do
   create_table "groups", force: true do |t|
     t.string  "title"
     t.integer "group_class_id"
+  end
+
+  create_table "job_classes", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "jobs", force: true do |t|
+    t.integer  "job_class_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "messagefacts", force: true do |t|

@@ -68,7 +68,7 @@ class UsersController < ApplicationController
 
   def outbox
     if current_user
-      render :json => current_user.sent_messages, :layout => false
+      render :json => current_user.sent_messages.as_json({ :include => params[:include] }), :layout => false
     else
       render :json => [], :layout => false, :status => 401
     end

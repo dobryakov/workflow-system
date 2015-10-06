@@ -6,6 +6,8 @@ class AttachesController < ApplicationController
   def index
     if params[:message_id]
       @attaches = Message.find(params[:message_id]).attaches
+    elsif params[:job_id]
+      @attaches = Job.find(params[:job_id]).attaches
     else
       @attaches = Attach.all
     end

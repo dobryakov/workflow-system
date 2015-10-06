@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
-  has_many :sent_messages,     class_name: 'Message', foreign_key: 'sender_id'
-  has_many :received_messages, class_name: 'Message', foreign_key: 'recipient_id'
+  has_many :sent_messages,     -> { where(is_completed: 1) },                                 class_name: 'Message', foreign_key: 'sender_id'
+  has_many :received_messages, -> { where(is_assigned: 1, is_accepted: 0, is_completed: 1) }, class_name: 'Message', foreign_key: 'recipient_id'
 
   has_many :workers
   has_many :workpoints, :through => :workers
