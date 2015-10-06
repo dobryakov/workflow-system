@@ -1,0 +1,17 @@
+<%= form_for(@attach) do |f| %>
+  <% if @attach.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@attach.errors.count, "error") %> prohibited this attach from being saved:</h2>
+
+      <ul>
+      <% @attach.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

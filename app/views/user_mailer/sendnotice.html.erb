@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<%= @body %>
+
+<h1>Workpoint <%= @workpoint.id %>: <%= @workpoint.title %></h1>
+
+<p>Message <%= @message.id %>: <%= @message.content %></p>
+
+<p>Documents:</p>
+
+<ul>
+  <% @documents.each do |document| %>
+      <li> <%= document.id %>: <%= document.foreign_document_url('html') %></li>
+  <% end %>
+</ul>
+
+<p>Outs:</p>
+
+<ul>
+<% @outs.each do |out| %>
+  <li> <%= out.id %>: <%= out.title %> => жми <%= out.complete_url(@message) %></li>
+<% end %>
+</ul>
+
+<p>Thanks for joining and have a great day!</p>
+</body>
+</html>

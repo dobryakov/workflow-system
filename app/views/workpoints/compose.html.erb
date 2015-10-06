@@ -1,0 +1,21 @@
+<% title "#{@workpoint.title} : #{@workflow.title}" %>
+
+<h1><%= @workpoint.title %></h1>
+<h6>Бизнес-процесс: <%= @workflow.title %></h6>
+
+<p>Текст сообщения:</p>
+<blockquote>
+  <p><%= @message.content %></p>
+</blockquote>
+
+<p>Приложенные документы</p>
+<ul>
+  <% @documents.each do |document| %>
+      <li> <%= link_to "Document #{document.id}", document.foreign_document_url('html'), target: '_blank' %></li>
+  <% end %>
+</ul>
+
+<p>Действия:</p>
+<% @outs.each do |out| %>
+<span><%= link_to out.title, out.complete_url(@message), class: 'btn btn-success' %></span>
+<% end %>

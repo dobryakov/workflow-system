@@ -1,0 +1,3 @@
+class ExternalDocument < Document
+
+end

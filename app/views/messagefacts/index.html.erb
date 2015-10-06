@@ -1,0 +1,23 @@
+<h1>Listing messagefacts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @messagefacts.each do |messagefact| %>
+      <tr>
+        <td><%= link_to 'Show', messagefact %></td>
+        <td><%= link_to 'Edit', edit_messagefact_path(messagefact) %></td>
+        <td><%= link_to 'Destroy', messagefact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Messagefact', new_messagefact_path %>

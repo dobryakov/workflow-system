@@ -1,0 +1,23 @@
+<h1>Listing outs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @outs.each do |out| %>
+      <tr>
+        <td><%= link_to 'Show', out %></td>
+        <td><%= link_to 'Edit', edit_out_path(out) %></td>
+        <td><%= link_to 'Destroy', out, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Out', new_out_path %>
