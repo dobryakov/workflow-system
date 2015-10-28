@@ -3,41 +3,41 @@ This is a backend for workflow (business process) management system. You can set
 # Message
   create_table "messages"
     t.text     "content",
-    t.integer  "sender_id" // юзер-отправитель, который выполнил работу на workpoint и нажал complete на конкретном out-е
-    t.integer  "sender_out_id" // на каком ауте оно было "completed" (закончено и отправлено)
-    t.integer  "sender_workpoint_id" // проставляется бэкэндом в справочных целях, исходя из out_id
-    t.integer  "recipient_workpoint_id" // воркпоинт-получатель, проставляется бэкэндом исходя из next_workpoint_id у воркпоинта
-    t.integer  "recipient_id" // проставляется бэкэндом в момент назначения рандомного исполнителя на воркпоинте-получателе
-    t.boolean  "completed" // проставляется бэкэндом
-    t.boolean  "accepted" // проставляется бэкэндом
+    t.integer  "sender_id" # Sender - the person (worker) who get the work done (at specific workpoint)
+    t.integer  "sender_out_id" # What out? (read below)
+    t.integer  "sender_workpoint_id" # Sender workpoint
+    t.integer  "recipient_workpoint_id" # Recipient workpoint (next worker in the workflow)
+    t.integer  "recipient_id" # Specific User (worker) to process this work
+    t.boolean  "completed" # Work is done (by worker)
+    t.boolean  "accepted" # Task is accepted (by worker)
   end
 
-# Document = сущность, путешествующая по процессам прицепленной к сообщениям, по сути - это ресурс со ссылкой на внешний REST-API
+# Document (external resource by REST API, which could be attached to message)
   create_table "documents"
     t.string  "type"
-    t.string  "base_url" // базовый URL REST-API удалённого ресурса
-    t.integer "foreign_id" // id удалённого ресурса, например 28
+    t.string  "base_url" // Foreign url of REST API
+    t.integer "foreign_id" // Foreign id
   end
 
-# Attach = сущность, фиксирующая факт присоединения документа к конкретному сообщению
+# Attach (link between document[s] and message)
   create_table "attaches"
     t.integer "message_id"
-    t.string  "attachable_type" // любая сущность в системе, например тот же Document
+    t.string  "attachable_type"
     t.integer "attachable_id"
   end
 
-# User, имеет много воркпоинтов
+# User (worker, he doing the work)
   create_table "users"
     t.string   "login"
-    t.string   "password" // виртуальное свойство
+    t.string   "password"
   end
 
-# Workflow, имеет много воркпоинтов
+# Workflow (single business process, contains workpoints)
   create_table "workflows"
     t.string   "title"
   end
 
-# Workpoint, принадлежит одному воркфлоу, имеет много юзеров
+# Workpoint (one single step in specific workflow with specific workers)
   create_table "workpoints"
     t.string   "title"
     t.integer  "workflow_id"
@@ -47,7 +47,7 @@ This is a backend for workflow (business process) management system. You can set
   create_table "outs"
     t.string   "title"
     t.integer  "workpoint_id"
-    t.integer  "next_workpoint_id" // следующий workpoint в цепочке, на который бэкэнд будет отправлять сообщения в момент complete на данном out-e
+    t.integer  "next_workpoint_id" # Link to next workpoint
   end
 
 # Messagefact - entity that fix fact of receiving message at specific workpoint
@@ -58,3 +58,6 @@ Completemessagefact.create(
         :out     => @wp1.outs.first
     ).cloned_message
 
+# Filter (conditions which ensure that the task at this step of the workflow is solved)
+
+# @TODO...
