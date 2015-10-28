@@ -58,6 +58,8 @@ Completemessagefact.create(
         :out     => @wp1.outs.first
     ).cloned_message
 
+# at each workpoint the message and documents are cloning, so you always can see states of work (see the changes) at each one.
+
 # Filter (conditions which ensure that the task at this step of the workflow is solved)
 
 # @TODO...
