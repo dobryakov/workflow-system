@@ -1,5 +1,6 @@
+This is a backend for workflow (business process) management system. You can setup several workflows (step by step, workpoint by workpoint) for your own business process. At each workpoint you can assign output filters (conditions which ensure that the task at this step of the workflow is solved). After this just assign workers (your employees) to each workpoint, and run your first business task through it!
 
-// сообщение
+# Message
   create_table "messages"
     t.text     "content",
     t.integer  "sender_id" // юзер-отправитель, который выполнил работу на workpoint и нажал complete на конкретном out-е
@@ -11,52 +12,48 @@
     t.boolean  "accepted" // проставляется бэкэндом
   end
 
-// документ = сущность, путешествующая по процессам прицепленной к сообщениям, по сути - это ресурс со ссылкой на внешний REST-API
+# Document = сущность, путешествующая по процессам прицепленной к сообщениям, по сути - это ресурс со ссылкой на внешний REST-API
   create_table "documents"
     t.string  "type"
     t.string  "base_url" // базовый URL REST-API удалённого ресурса
     t.integer "foreign_id" // id удалённого ресурса, например 28
   end
 
-// аттач = сущность, фиксирующая факт присоединения документа к конкретному сообщению
+# Attach = сущность, фиксирующая факт присоединения документа к конкретному сообщению
   create_table "attaches"
     t.integer "message_id"
     t.string  "attachable_type" // любая сущность в системе, например тот же Document
     t.integer "attachable_id"
   end
 
-// юзер, имеет много воркпоинтов
+# User, имеет много воркпоинтов
   create_table "users"
     t.string   "login"
     t.string   "password" // виртуальное свойство
   end
 
-// воркфлоу, имеет много воркпоинтов
+# Workflow, имеет много воркпоинтов
   create_table "workflows"
     t.string   "title"
   end
 
-// воркпоинт, принадлежит одному воркфлоу, имеет много юзеров
+# Workpoint, принадлежит одному воркфлоу, имеет много юзеров
   create_table "workpoints"
     t.string   "title"
     t.integer  "workflow_id"
   end
 
-// выход (аут) с воркпоинта, принадлежит воркпоинту
+# Exit (out) from workpoint, actually - link to next workpoint
   create_table "outs"
     t.string   "title"
     t.integer  "workpoint_id"
     t.integer  "next_workpoint_id" // следующий workpoint в цепочке, на который бэкэнд будет отправлять сообщения в момент complete на данном out-e
   end
 
-// Messagefact.last.destroy
-// Message.find(86)
+# Messagefact - entity that fix fact of receiving message at specific workpoint
 
-// создаём факт взамен старого кастомного метода workpoint.complete_message
-f = Completemessagefact.create( :message_id => 86, :out_id => 6 )
-
-// пример из тестов:
-@m3 = Completemessagefact.create(
+# example:
+Completemessagefact.create(
         :message => @m2,
         :out     => @wp1.outs.first
     ).cloned_message
