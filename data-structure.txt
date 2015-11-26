@@ -1,0 +1,64 @@
+
+# Message
+  create_table "messages"
+    t.text     "content",
+    t.integer  "sender_id" # Sender - the person (worker) who get the work done (at specific workpoint)
+    t.integer  "sender_out_id" # What out? (read below)
+    t.integer  "sender_workpoint_id" # Sender workpoint
+    t.integer  "recipient_workpoint_id" # Recipient workpoint (next worker in the workflow)
+    t.integer  "recipient_id" # Specific User (worker) to process this work
+    t.boolean  "completed" # Work is done (by worker)
+    t.boolean  "accepted" # Task is accepted (by worker)
+  end
+
+# Document (external resource by REST API, which could be attached to message)
+  create_table "documents"
+    t.string  "type"
+    t.string  "base_url" // Foreign url of REST API
+    t.integer "foreign_id" // Foreign id
+  end
+
+# Attach (link between document[s] and message)
+  create_table "attaches"
+    t.integer "message_id"
+    t.string  "attachable_type"
+    t.integer "attachable_id"
+  end
+
+# User (worker, he doing the work)
+  create_table "users"
+    t.string   "login"
+    t.string   "password"
+  end
+
+# Workflow (single business process, contains workpoints)
+  create_table "workflows"
+    t.string   "title"
+  end
+
+# Workpoint (one single step in specific workflow with specific workers)
+  create_table "workpoints"
+    t.string   "title"
+    t.integer  "workflow_id"
+  end
+
+# Exit (out) from workpoint, actually - link to next workpoint
+  create_table "outs"
+    t.string   "title"
+    t.integer  "workpoint_id"
+    t.integer  "next_workpoint_id" # Link to next workpoint
+  end
+
+# Messagefact - entity that fix fact of receiving message at specific workpoint
+
+# example:
+Completemessagefact.create(
+        :message => @m2,
+        :out     => @wp1.outs.first
+    ).cloned_message
+
+# at each workpoint the message and documents are cloning, so you always can see states of work (see the changes) at each one.
+
+# Filter (requirements and conditions which ensure that the task at this step of the workflow is solved)
+
+# @TODO...
