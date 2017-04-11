@@ -1,3 +1,5 @@
+This is a working prototype which gives you a single answer on a single question: "What to do now?" (Next Best Action). Each worker gets a single task each time. 
+
 About
 -----
 
